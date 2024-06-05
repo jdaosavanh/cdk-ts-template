@@ -1,18 +1,22 @@
-# Build and Release Folders
-bin-debug/
-bin-release/
-[Oo]bj/
-[Bb]in/
+*.js
+!apps/iac/jest.config.js
+*.d.ts
+node_modules
 
-# Other files and folders
-.settings/
+# CDK asset staging directory
+.cdk.staging
+cdk.out
+cdk.context.json
 
-# Executables
-*.swf
-*.air
-*.ipa
-*.apk
+# yarn
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions
 
-# Project files, i.e. `.project`, `.actionScriptProperties` and `.flexProperties`
-# should NOT be excluded as they contain compiler settings and other important
-# information for Eclipse / Flash Builder.
+# IDEs
+
+/.idea
