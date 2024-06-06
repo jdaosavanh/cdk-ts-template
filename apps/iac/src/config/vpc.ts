@@ -9,6 +9,7 @@ export type VpcParams = BaseParams & {
     vpcNatGateways?: number;
     vpcPublicSubnetMask?: number;
     vpcPrivateSubnetMask?: number;
+    vpcIsolatedSubnetMask?: number;
     vpcPublicSubnetGN?: string;
     vpcAppSubnetGN?: string;
     vpcDBSubnetGN?: string;
@@ -20,7 +21,8 @@ export class VpcConfig extends BaseConfig {
     vpcMaxAzs: number = 3;
     vpcNatGateways: number = 1;
     vpcPublicSubnetMask: number = 24;
-    vpcPrivateSubnetMask: number = 25;
+    vpcPrivateSubnetMask: number = 24;
+    vpcIsolatedSubnetMask: number = 25
     vpcPublicSubnetGN: string = 'public-group';
     vpcAppSubnetGN: string ='app-group';
     vpcDBSubnetGN: string = 'db-group';
@@ -34,6 +36,7 @@ export class VpcConfig extends BaseConfig {
         this.vpcNatGateways = this.getNum(process.env["VPC_NAME"], config.vpcNatGateways, this.vpcNatGateways);
         this.vpcPublicSubnetMask = this.getNum(process.env["VPC_PUBLIC_SUBNET_MASK"], config.vpcPublicSubnetMask, this.vpcPublicSubnetMask);
         this.vpcPrivateSubnetMask = this.getNum(process.env["VPC_PRIVATE_SUBNET_MASK"], config.vpcPrivateSubnetMask, this.vpcPrivateSubnetMask);
+        this.vpcIsolatedSubnetMask = this.getNum(process.env["VPC_ISO_SUBNET_MASK"], config.vpcIsolatedSubnetMask, this.vpcIsolatedSubnetMask);
         this.vpcPublicSubnetGN = this.getString(process.env["VPC_PUBLIC_SUBNET_GN"], config.vpcPublicSubnetGN, this.vpcPublicSubnetGN);
         this.vpcAppSubnetGN = this.getString(process.env["VPC_APP_SUBNET_GN"], config.vpcName, this.vpcName);
         this.vpcDBSubnetGN = this.getString(process.env["VPC_DB_SUBNET_GN"], config.vpcDBSubnetGN, this.vpcDBSubnetGN);
