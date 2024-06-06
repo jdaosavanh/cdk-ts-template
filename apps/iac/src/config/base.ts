@@ -20,6 +20,13 @@ export class BaseConfig {
 
     }
 
+    namePrefix(): string {
+        return `${this.domain}-${this.function}-${this.environment}`
+    }
+
+    autoResourceName(name:string): string {
+        return `${this.namePrefix()}-${name}`
+    }
 
     getNum(value: unknown, configValue: number | undefined, defaultValue: number): number {
         const parsedValue = value ? parseInt(value as string, 10) : null;
