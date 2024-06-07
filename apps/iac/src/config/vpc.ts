@@ -16,7 +16,7 @@ export type VpcParams = BaseParams & {
 }
 
 export class VpcConfig extends BaseConfig {
-    vpcName: string;
+    vpcName: string = this.autoResourceName('vpc');
     vpcCIDR: string = '10.0.0.0/21'
     vpcMaxAzs: number = 3;
     vpcNatGateways: number = 1;

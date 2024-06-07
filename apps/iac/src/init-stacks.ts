@@ -1,4 +1,4 @@
-import { VpcStack } from "./stacks"
+import { VpcStack, Ec2Stack } from "./stacks"
 import {App, Environment} from "aws-cdk-lib";
 import {BaseConfig, VpcConfig} from "./config";
 
@@ -11,6 +11,7 @@ class InitStacks {
         this.env = env;
         this.config = new BaseConfig({})
         const vpc = this.vpcStack()
+        const ec2s = this.ec2Stack()
     }
 
     getStackProps(props?: Environment) {
@@ -29,6 +30,13 @@ class InitStacks {
         const vpcConfig = new VpcConfig({})
         const stackName = vpcConfig.autoResourceName('vpc-stack')
         return new VpcStack(this.app, stackName, stackProps, vpcConfig)
+    }
+
+    ec2Stack(){
+      const stackProps = this.getStackProps()
+      const ec2 = new VpcConfig({})
+      const stackName = ec2.autoResourceName('ec2-stack')
+      return new Ec2Stack(this.app, stackName, stackProps, ec2)
     }
 }
 
