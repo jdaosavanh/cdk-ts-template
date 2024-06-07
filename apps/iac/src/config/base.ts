@@ -16,7 +16,7 @@ export class BaseConfig {
         dotenv.config();
         this.domain = this.getString(process.env["DOMAIN"], config.domain, this.domain)
         this.function = this.getString(process.env["FUNCTION"], config.function, this.function)
-        this.environment = this.getString(process.env["environment"], config.environment, this.environment)
+        this.environment = this.getString(process.env["ENVIRONMENT"], config.environment, this.environment)
 
     }
 
