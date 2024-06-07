@@ -29,7 +29,7 @@ export class VpcStack extends CustomStack {
                 {
                     name: config.vpcDBSubnetGN,
                     cidrMask: config.vpcIsolatedSubnetMask,
-                    subnetType: aws_ec2.SubnetType.PRIVATE_WITH_EGRESS
+                    subnetType: aws_ec2.SubnetType.PRIVATE_ISOLATED
                 }
             ]
         }

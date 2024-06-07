@@ -1,6 +1,6 @@
 import { App, Environment} from "aws-cdk-lib";
 import InitStacks from './init-stacks'
-import * as process from "node:process";
+import * as process from "process";
 
 const app = new App()
 

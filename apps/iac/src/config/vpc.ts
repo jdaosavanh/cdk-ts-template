@@ -38,7 +38,7 @@ export class VpcConfig extends BaseConfig {
         this.vpcPrivateSubnetMask = this.getNum(process.env["VPC_PRIVATE_SUBNET_MASK"], config.vpcPrivateSubnetMask, this.vpcPrivateSubnetMask);
         this.vpcIsolatedSubnetMask = this.getNum(process.env["VPC_ISO_SUBNET_MASK"], config.vpcIsolatedSubnetMask, this.vpcIsolatedSubnetMask);
         this.vpcPublicSubnetGN = this.getString(process.env["VPC_PUBLIC_SUBNET_GN"], config.vpcPublicSubnetGN, this.vpcPublicSubnetGN);
-        this.vpcAppSubnetGN = this.getString(process.env["VPC_APP_SUBNET_GN"], config.vpcName, this.vpcName);
+        this.vpcAppSubnetGN = this.getString(process.env["VPC_APP_SUBNET_GN"], config.vpcAppSubnetGN, this.vpcAppSubnetGN);
         this.vpcDBSubnetGN = this.getString(process.env["VPC_DB_SUBNET_GN"], config.vpcDBSubnetGN, this.vpcDBSubnetGN);
 
     }
