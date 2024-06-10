@@ -1,5 +1,5 @@
 import CustomStack from "../custom-stack"
-import {aws_ec2, StackProps} from "aws-cdk-lib";
+import { aws_ec2, CfnOutput, StackProps } from "aws-cdk-lib";
 import {Construct} from "constructs";
 import { VpcConfig } from "../config";
 import { ManagedPolicy, PolicyStatement, Role, ServicePrincipal } from "aws-cdk-lib/aws-iam";
@@ -46,9 +46,21 @@ export class Ec2Stack extends CustomStack {
         allowAllOutbound: true,
       }
     )
-    securityGroup.addIngressRule(Peer.ipv4('10.0.0.0/8'), Port.tcp(22), 'Allow SSH from network');
+    securityGroup.addIngressRule(Peer.ipv4(vpc.vpcCidrBlock), Port.allTcp(), 'Allow access inside vpc');
 
-    const instance = new Instance(this, 'control-plane', {
+    const controlPlane = new Instance(this, 'control-plane', {
+      vpc: vpc,
+      instanceType: InstanceType.of(InstanceClass.T3, InstanceSize.MEDIUM),
+      machineImage: new aws_ec2.AmazonLinuxImage({
+        generation: aws_ec2.AmazonLinuxGeneration.AMAZON_LINUX_2,
+      }),
+      role: role,
+      securityGroup: securityGroup
+    });
+
+    new CfnOutput(this, 'controlplane-ip', { value: controlPlane.instancePrivateIp });
+
+    const worker = new Instance(this, 'worker', {
       vpc: vpc,
       instanceType: InstanceType.of(InstanceClass.T3, InstanceSize.LARGE),
       machineImage: new aws_ec2.AmazonLinuxImage({
@@ -57,6 +69,9 @@ export class Ec2Stack extends CustomStack {
       role: role,
       securityGroup: securityGroup
     });
+
+    new CfnOutput(this, 'worker-ip', { value: worker.instancePrivateIp });
+
   }
 
    vpc(){
