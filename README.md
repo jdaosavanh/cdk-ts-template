@@ -17,5 +17,10 @@ The `cdk.json` file tells the CDK Toolkit how to execute your app.
 ## AWS
 
 aws ssm start-session \
-    --profile coreDev \
+    --profile profile-name \
     --target instance-id
+
+aws ssm start-session \
+    --target instance-id \
+    --document-name AWS-StartPortForwardingSession \
+    --parameters '{"portNumber":["80"], "localPortNumber":["56789"]}'

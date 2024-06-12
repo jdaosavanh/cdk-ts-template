@@ -7,12 +7,15 @@ import {
   Instance,
   InstanceClass,
   InstanceSize,
-  InstanceType,
+  InstanceType, KeyPair,
   Peer,
   Port,
   SecurityGroup,
   Vpc
 } from "aws-cdk-lib/aws-ec2";
+import { readFile, readFileSync } from "node:fs";
+import * as path from "node:path";
+import * as fs from "fs";
 
 export class Ec2Stack extends CustomStack {
   vpcConfig: VpcConfig;
@@ -48,6 +51,10 @@ export class Ec2Stack extends CustomStack {
     )
     securityGroup.addIngressRule(Peer.ipv4(vpc.vpcCidrBlock), Port.allTcp(), 'Allow access inside vpc');
 
+
+    //const userDataScript = readFileSync('./install-containerd-yum.sh', 'utf8');
+    const file = fs.readFileSync(path.resolve(__dirname, "../scripts/install-containerd-yum.sh"), 'utf8');
+    const userData = aws_ec2.UserData.custom(file);
     const controlPlane = new Instance(this, 'control-plane', {
       vpc: vpc,
       instanceType: InstanceType.of(InstanceClass.T3, InstanceSize.MEDIUM),
@@ -55,7 +62,8 @@ export class Ec2Stack extends CustomStack {
         generation: aws_ec2.AmazonLinuxGeneration.AMAZON_LINUX_2,
       }),
       role: role,
-      securityGroup: securityGroup
+      securityGroup: securityGroup,
+      userData: userData
     });
 
     new CfnOutput(this, 'controlplane-ip', { value: controlPlane.instancePrivateIp });
@@ -67,10 +75,14 @@ export class Ec2Stack extends CustomStack {
         generation: aws_ec2.AmazonLinuxGeneration.AMAZON_LINUX_2,
       }),
       role: role,
-      securityGroup: securityGroup
+      securityGroup: securityGroup,
+      userData: userData
     });
 
     new CfnOutput(this, 'worker-ip', { value: worker.instancePrivateIp });
+
+    new CfnOutput(this, 'controlplane-instance', { value: controlPlane.instanceId });
+    new CfnOutput(this, 'worker-instance', { value: worker.instanceId });
 
   }
 
