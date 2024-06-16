@@ -53,7 +53,7 @@ export class Ec2Stack extends CustomStack {
 
 
     //const userDataScript = readFileSync('./install-containerd-yum.sh', 'utf8');
-    const file = fs.readFileSync(path.resolve(__dirname, "../scripts/install-containerd-yum.sh"), 'utf8');
+    const file = fs.readFileSync(path.resolve(__dirname, "../scripts/install-k8s.sh"), 'utf8');
     const userData = aws_ec2.UserData.custom(file);
     const controlPlane = new Instance(this, 'control-plane', {
       vpc: vpc,
@@ -66,8 +66,8 @@ export class Ec2Stack extends CustomStack {
       userData: userData
     });
 
-    new CfnOutput(this, 'controlplane-ip', { value: controlPlane.instancePrivateIp });
-
+    const workerfile = fs.readFileSync(path.resolve(__dirname, "../scripts/install-containerd-yum.sh"), 'utf8');
+    const workeruserData = aws_ec2.UserData.custom(workerfile);
     const worker = new Instance(this, 'worker', {
       vpc: vpc,
       instanceType: InstanceType.of(InstanceClass.T3, InstanceSize.LARGE),
@@ -76,11 +76,11 @@ export class Ec2Stack extends CustomStack {
       }),
       role: role,
       securityGroup: securityGroup,
-      userData: userData
+      userData: workeruserData
     });
 
+    new CfnOutput(this, 'controlplane-ip', { value: controlPlane.instancePrivateIp });
     new CfnOutput(this, 'worker-ip', { value: worker.instancePrivateIp });
-
     new CfnOutput(this, 'controlplane-instance', { value: controlPlane.instanceId });
     new CfnOutput(this, 'worker-instance', { value: worker.instanceId });
 
