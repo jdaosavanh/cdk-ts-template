@@ -12,6 +12,7 @@ class InitStacks {
         this.config = new BaseConfig({})
         const vpc = this.vpcStack()
         const ec2s = this.ec2Stack()
+        ec2s.addDependency(vpc)
     }
 
     getStackProps(props?: Environment) {

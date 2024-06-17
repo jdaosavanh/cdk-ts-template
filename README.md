@@ -24,3 +24,5 @@ aws ssm start-session \
     --target instance-id \
     --document-name AWS-StartPortForwardingSession \
     --parameters '{"portNumber":["80"], "localPortNumber":["56789"]}'
+
+cdk deploy stack-name --require-approval never --profile devops 
