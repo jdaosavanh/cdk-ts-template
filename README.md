@@ -14,6 +14,12 @@ The `cdk.json` file tells the CDK Toolkit how to execute your app.
 * `cdk diff`        compare deployed stack with current state
 * `cdk synth`       emits the synthesized CloudFormation template
 
+## K8s
+
+kubectl create deployment nginx --image=nginx:alpine -–dry-run=client -o yaml
+kubectl create deployment nginx --image=nginx --dry-run=client -o yaml
+
+
 ## AWS
 
 aws ssm start-session \
@@ -21,8 +27,9 @@ aws ssm start-session \
     --target instance-id
 
 aws ssm start-session \
+    --profile devops \
     --target instance-id \
     --document-name AWS-StartPortForwardingSession \
-    --parameters '{"portNumber":["80"], "localPortNumber":["56789"]}'
+    --parameters '{"portNumber":["30000"], "localPortNumber":["9000"]}'
 
 cdk deploy stack-name --require-approval never --profile devops 

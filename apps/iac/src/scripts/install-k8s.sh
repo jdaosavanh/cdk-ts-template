@@ -67,6 +67,10 @@ export KUBECONFIG=/etc/kubernetes/admin.conf
 kubectl create namespace tigera-operator
 helm install calico projectcalico/tigera-operator --version v3.28.0 --namespace tigera-operator
 
+helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
+helm repo update
+helm install ingress-nginx ingress-nginx/ingress-nginx
+
 sed -i '$ a export PATH=$PATH:/usr/local/sbin' ~/.bashrc
 sed -i '$ a alias k=kubectl' ~/.bashrc
 touch ~/.profile
@@ -78,6 +82,7 @@ sed -i '$ a source ~/.bashrc' ~/.profile
 #chown $(id -u):$(id -g) $HOME/.kube/config
 #echo 'export PATH=$PATH:/usr/local/sbin' >> ~/.bashrc
 #echo 'alias k=kubectl' >> ~/.bashrc
+#. ~/.bashrc
 
 #sudo su ssm-user
 #mkdir -p $HOME/.kube
