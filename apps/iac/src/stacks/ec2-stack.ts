@@ -52,8 +52,8 @@ export class Ec2Stack extends CustomStack {
     securityGroup.addIngressRule(Peer.ipv4(vpc.vpcCidrBlock), Port.allTcp(), 'Allow access inside vpc');
 
 
-    //const userDataScript = readFileSync('./install-containerd-yum.sh', 'utf8');
-    const file = fs.readFileSync(path.resolve(__dirname, "../scripts/install-k8s.sh"), 'utf8');
+    //const userDataScript = readFileSync('./install-worker.sh', 'utf8');
+    const file = fs.readFileSync(path.resolve(__dirname, "../scripts/install-k8-master.sh"), 'utf8');
     const userData = aws_ec2.UserData.custom(file);
     const controlPlane = new Instance(this, 'control-plane', {
       vpc: vpc,
@@ -66,7 +66,7 @@ export class Ec2Stack extends CustomStack {
       userData: userData
     });
 
-    const workerfile = fs.readFileSync(path.resolve(__dirname, "../scripts/install-containerd-yum.sh"), 'utf8');
+    const workerfile = fs.readFileSync(path.resolve(__dirname, "../scripts/install-worker.sh"), 'utf8');
     const workeruserData = aws_ec2.UserData.custom(workerfile);
     const worker = new Instance(this, 'worker', {
       vpc: vpc,

@@ -1,5 +1,5 @@
 import CustomStack from "../custom-stack"
-import {StackProps, aws_elasticloadbalancingv2, aws_elasticloadbalancingv2_targets} from "aws-cdk-lib";
+import {StackProps, aws_elasticloadbalancingv2, aws_elasticloadbalancingv2_targets, CfnOutput} from "aws-cdk-lib";
 import {Construct} from "constructs";
 import {VpcConfig} from "../config";
 import {
@@ -79,6 +79,8 @@ export class AlbStack extends CustomStack {
         // listener.addTargetGroups('k8s', {
         //     targetGroups: [targetGroup]
         // });
+
+        new CfnOutput(this, 'alb-host', { value: lb.loadBalancerDnsName });
 
     }
 
